@@ -1,0 +1,18 @@
+
+<mat-list>
+  <mat-list-item *ngFor="let patrol of patrols">
+    <h3 matLine>
+      {{patrol.name}}
+    </h3>
+    <div matLine>
+      <span>One time patrol: {{patrol.oneTimeDateTime}}</span>
+      <span> {{patrol.status}}</span>
+      <button *ngIf="patrol.status !== patrolStatus.DONE" mat-button (click)="editPatrol(patrol)">
+        <span *ngIf="patrol.status === patrolStatus.NOT_STARTED">Start</span>
+        <span *ngIf="patrol.status === patrolStatus.DRAFT">Edit</span>
+      </button>
+    </div>
+
+
+  </mat-list-item>
+</mat-list>

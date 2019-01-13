@@ -1,0 +1,171 @@
+<form fxLayout
+      fxLayoutAlign="start stretch"
+      fxLayout="column wrap"
+      fxLayoutGap="5px" [formGroup]="patrolFromGroup" (ngSubmit)="onFormSubmit()" translate>
+
+  <mat-form-field>
+    <mat-label translate>Name</mat-label>
+    <input matInput type="text"  formControlName="name">
+    <mat-error *ngIf="name.errors?.required" translate>
+      required
+    </mat-error>
+  </mat-form-field>
+  <div>
+    <mat-radio-group formControlName="recurrence">
+      <mat-radio-button [value]="recurrenceType.ONE_TIME">One time</mat-radio-button>
+      <mat-radio-button [value]="recurrenceType.RECURRING_IN_INTERVAL">Recurring in interval</mat-radio-button>
+      <mat-radio-button [value]="recurrenceType.RECURRING_NUMBER_OF_TIMES">Recurring number of times</mat-radio-button>
+    </mat-radio-group>
+  </div>
+
+  <div fxLayoutAlign="center" *ngIf="patrolFromGroup.value.recurrence === recurrenceType.ONE_TIME">
+    <mat-form-field fxFlex="50">
+      <mat-label translate>Date</mat-label>
+      <input matInput  formControlName="oneTimeDate" [matDatepicker]="oneTimeDatePicker">
+      <mat-datepicker-toggle matSuffix [for]="oneTimeDatePicker"></mat-datepicker-toggle>
+      <mat-datepicker #oneTimeDatePicker></mat-datepicker>
+      <mat-error *ngIf="oneTimeDate.errors?.required" translate>
+        required
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field fxFlex="50">
+      <mat-label translate>Time</mat-label>
+      <input matInput atp-time-picker formControlName="oneTimeTime" autocomplete="off">
+      <mat-error *ngIf="oneTimeTime.errors?.required" translate>
+        required
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+
+  <div *ngIf="patrolFromGroup.value.recurrence === recurrenceType.RECURRING_IN_INTERVAL">
+    <mat-form-field >
+      <mat-label translate>Start date</mat-label>
+      <input matInput  formControlName="startDate" [matDatepicker]="startDatePicker">
+      <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+      <mat-datepicker #startDatePicker></mat-datepicker>
+      <mat-error *ngIf="startDate.errors?.required" translate>
+        required
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field >
+      <mat-label translate>End date</mat-label>
+      <input matInput  formControlName="endDate" [matDatepicker]="endDatePicker">
+      <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+      <mat-datepicker #endDatePicker></mat-datepicker>
+      <mat-error *ngIf="endDate.errors?.required" translate>
+        required
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select placeholder="Interval" formControlName="interval" >
+        <mat-option *ngFor="let interval of intervals" [value]="interval">
+          {{interval}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div *ngIf="patrolFromGroup.value.recurrence === recurrenceType.RECURRING_NUMBER_OF_TIMES">
+    <mat-form-field >
+      <mat-label translate>Start date</mat-label>
+      <input matInput  formControlName="startDate" [matDatepicker]="startDatePicker">
+      <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+      <mat-datepicker #startDatePicker></mat-datepicker>
+      <mat-error *ngIf="startDate.errors?.required" translate>
+        required
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field >
+      <mat-label translate>Repetitions</mat-label>
+      <input matInput type="number"  formControlName="repetitions">
+      <mat-error *ngIf="repetitions.errors?.required" translate>
+        required
+      </mat-error>
+      <mat-error *ngIf="repetitions.errors?.min" translate>
+        must be positive
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select placeholder="Interval" formControlName="interval" >
+        <mat-option *ngFor="let interval of intervals" [value]="interval">
+          {{interval}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <mat-divider></mat-divider>
+     <div>Select room check</div>
+    <div *ngFor="let checksForPlace of patrolChecks | keyvalue">
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{checksForPlace.key}}
+          </mat-panel-title>
+          <mat-panel-description>
+
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <div *ngFor="let check of checksForPlace.value">
+          <span>{{check.question}}</span>
+          <mat-checkbox (change)="setMandatoryPhoto($event, check)">Photo mandatory</mat-checkbox>
+          <mat-checkbox (change)="placeCheckboxClicked($event, check)">Add</mat-checkbox>
+
+        </div>
+
+
+        <button type="button" mat-button (click)="openDialog(checksForPlace.value[0])">Add custom check</button>
+      </mat-expansion-panel>
+    </div>
+  <mat-divider></mat-divider>
+
+  <mat-divider></mat-divider>
+    <div>Set order by dragging</div>
+    <div [sortablejs]="selectedPatrolChecks | keyvalue" [sortablejsOptions]="options">
+
+      <div draggable *ngFor="let checksForPlace of selectedPatrolChecks | keyvalue">
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{checksForPlace.key}}
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <div [sortablejs]="checksForPlace.value" [sortablejsOptions]="options">
+            <div *ngFor="let check of checksForPlace.value">
+              <div>{{check.question}}</div>
+              <mat-checkbox [checked]="check.photoMandatory" disabled>Photo mandatory</mat-checkbox>
+            </div>
+          </div>
+        </mat-expansion-panel>
+      </div>
+
+    </div>
+  <mat-divider></mat-divider>
+
+
+  <multiple-select-with-autocomplete [placeholder]="'Select people to notify'" [formArray]="peoplesToNotify" [submitted]="submitted" [searchOptions]="peoples"></multiple-select-with-autocomplete>
+
+  <multiple-select-with-autocomplete [placeholder]="'Responsible'" [formArray]="responsiblePeople" [submitted]="submitted" [searchOptions]="responsiblePeopleArray"></multiple-select-with-autocomplete>
+
+
+
+  <mat-form-field >
+    <mat-label translate>Minimal time between checks</mat-label>
+    <input matInput type="number"  formControlName="minimalTimeBetweenChecks">
+    <mat-error *ngIf="minimalTimeBetweenChecks.errors?.required" translate>
+      required
+    </mat-error>
+    <mat-error *ngIf="minimalTimeBetweenChecks.errors?.min" translate>
+      must be positive
+    </mat-error>
+  </mat-form-field>
+  <mat-checkbox formControlName="checksInOrder">Checks must be in order</mat-checkbox>
+  <mat-checkbox formControlName="judgingRight">Judging right is handed over</mat-checkbox>
+
+
+
+  <button type="submit" mat-button translate>Submit</button>
+</form>

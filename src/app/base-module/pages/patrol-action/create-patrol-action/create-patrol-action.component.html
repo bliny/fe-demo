@@ -1,0 +1,10 @@
+<div>
+<form fxLayout
+      fxLayoutAlign="start stretch"
+      fxLayout="column wrap"
+      fxLayoutGap="5px" [formGroup]="patrolActionFromGroup" (ngSubmit)="onFormSubmit()" translate>
+  <patrol-action [patrolActionFromGroup]="patrolActionFromGroup" [submitted]="submitted"></patrol-action>
+
+  <button type="submit" mat-button translate>Submit</button>
+</form>
+</div>

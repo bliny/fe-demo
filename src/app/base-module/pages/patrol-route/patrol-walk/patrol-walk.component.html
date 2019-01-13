@@ -1,0 +1,68 @@
+<mat-vertical-stepper [linear]="patrol.checksInOrder" #stepper>
+  <mat-step *ngFor="let check of patrol.checks; let i= index" [stepControl]="forms[i]">
+    <form [formGroup]="forms[i]">
+      <ng-template matStepLabel>{{check.question}} in {{check.place.name}}</ng-template>
+      <mat-form-field>
+        <mat-label translate>Comment</mat-label>
+        <input matInput type="text"  formControlName="comment">
+        <mat-error *ngIf="forms[i].get('comment').errors?.required" translate>
+          required
+        </mat-error>
+      </mat-form-field>
+      <div>
+        <mat-label>Irregularity found </mat-label>
+        <mat-radio-group formControlName="irregular">
+          <mat-radio-button value=true>Yes</mat-radio-button>
+          <mat-radio-button value=false>No</mat-radio-button>
+        </mat-radio-group>
+        <mat-error *ngIf="forms[i].get('irregular').errors?.required" translate>
+          required
+        </mat-error>
+      </div>
+
+      <div *ngIf="forms[i].get('irregular').value === 'true'">
+        <file-upload [formArray]="pictures" [submitted]="submitted"></file-upload>
+        <div *ngIf="patrol.judgingRight">
+          <div>
+            <mat-label>Severity </mat-label>
+            <mat-radio-group formControlName="severity">
+              <mat-radio-button value="minor">Minor</mat-radio-button>
+              <mat-radio-button value="major">Major</mat-radio-button>
+            </mat-radio-group>
+            <mat-error *ngIf="forms[i].get('severity').errors?.required && submitted" translate>
+              required
+            </mat-error>
+          </div>
+          <mat-form-field>
+            <mat-label translate>Task</mat-label>
+            <input matInput type="text"  formControlName="task">
+            <mat-error *ngIf="forms[i].get('task').errors?.required" translate>
+              required
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field >
+            <mat-label translate>Deadline</mat-label>
+            <input matInput  formControlName="deadline" [matDatepicker]="deadlineDatePicker">
+            <mat-datepicker-toggle matSuffix [for]="deadlineDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker #deadlineDatePicker></mat-datepicker>
+            <mat-error *ngIf="forms[i].get('deadline').errors?.required" translate>
+              required
+            </mat-error>
+          </mat-form-field>
+          <multiple-select-with-autocomplete [placeholder]="'Responsible'" [formArray]="forms[i].get('responsiblePeople')" [submitted]="submitted" [searchOptions]="responsiblePeopleArray"></multiple-select-with-autocomplete>
+        </div>
+      </div>
+
+
+      <button mat-button matStepperNext>Next</button>
+    </form>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Patrol done</ng-template>
+    <div>
+      <button mat-button (click)="save(false)">Finish</button>
+      <button mat-button (click)="save(true)">Draft</button>
+    </div>
+  </mat-step>
+</mat-vertical-stepper>
+

@@ -1,0 +1,35 @@
+<div fxLayout
+     fxLayoutAlign="start stretch"
+     fxLayout="column wrap"
+     fxLayoutGap="5px" [formGroup]="patrolCheckFromGroup">
+  <h1>Place: {{placeName}}</h1>
+  <mat-form-field>
+    <mat-label translate>Question</mat-label>
+    <input matInput type="text"  formControlName="question">
+    <mat-error *ngIf="question.errors?.required" translate>
+      required
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label translate>Desc</mat-label>
+    <textarea matInput rows="4" cols="50" formControlName="description">
+          </textarea>
+    <mat-error *ngIf="description.errors?.required" translate>
+      required
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <div  fxFlex="80">
+      <input type="text" placeholder="Select action" aria-label="Number" matInput formControlName="patrolActionAutoCompleteInput" [matAutocomplete]="auto">
+      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="patrolActionSelected($event)">
+        <mat-option *ngFor="let patrolAction of patrolActions | autoCompletePatrolPipe:patrolActionAutoCompleteInput.value " [value]="patrolAction.name">
+          {{patrolAction?.name}}
+        </mat-option>
+      </mat-autocomplete>
+    </div>
+    <button type='button' fxFlex="20" mat-button (click)="newAction(); $event.stopPropagation();">new action</button>
+  </mat-form-field>
+  <patrol-action *ngIf="selectedPatrolAction" [patrolActionFromGroup]="patrolAction" [submitted]="submitted" [patrolAction]="selectedPatrolAction" [disableFields]="selectedPatrolAction.id"></patrol-action>
+  <file-upload [formArray]="pictures" [submitted]="submitted"></file-upload>
+</div>
+

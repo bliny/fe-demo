@@ -1,0 +1,21 @@
+<div *ngFor="let checksForPlace of patrolChecks | keyvalue; trackBy: trackById;">
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{checksForPlace.key}}
+      </mat-panel-title>
+      <mat-panel-description>
+
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <div *ngFor="let check of checksForPlace.value; let i = index;">
+      {{check.question}}
+      <button mat-button (click)="edit(check.id)">edit</button>
+      <!--<button mat-button (click)="delete(checksForPlace.key, i)">delete</button>-->
+    </div>
+
+    <button mat-button (click)="addNewCheck(checksForPlace.value[0].place.id)">add new</button>
+
+  </mat-expansion-panel>
+</div>

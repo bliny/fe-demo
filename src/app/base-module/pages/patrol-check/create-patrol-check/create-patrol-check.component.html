@@ -1,0 +1,10 @@
+
+<form fxLayout
+      fxLayoutAlign="start stretch"
+      fxLayout="column wrap"
+      fxLayoutGap="5px" [formGroup]="patrolCheckFromGroup" (ngSubmit)="onFormSubmit()" translate>
+  <patrol-check [selectedPlace]="place" [patrolCheckFromGroup]="patrolCheckFromGroup" [submitted]="submitted"></patrol-check>
+
+  <button type="submit" mat-button translate>Submit</button>
+</form>
+

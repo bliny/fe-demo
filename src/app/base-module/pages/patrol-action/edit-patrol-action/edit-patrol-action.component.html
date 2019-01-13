@@ -1,0 +1,5 @@
+<form  [formGroup]="patrolActionFromGroup" (ngSubmit)="onFormSubmit()" translate>
+  <patrol-action [patrolActionFromGroup]="patrolActionFromGroup" [submitted]="submitted" [patrolAction]="patrolAction"></patrol-action>
+
+  <button type="submit" mat-button translate>Submit</button>
+</form>

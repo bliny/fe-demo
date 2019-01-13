@@ -1,0 +1,41 @@
+.error{ 
+  color: red; 
+}
+.dragarea{
+    font-size: 24px;
+    border: 3px solid #bbb; 
+    padding: 20px ;
+    background-color: #fff;
+    color: #bbb;
+}
+.droparea{
+    font-size: 24px;
+    border: 3px dashed #bbb; 
+    padding: 20px ;
+    background-color: #eff;
+    color: #aaa;
+}
+
+.fileGallery{
+  float:left;
+  width:100%;
+}
+
+.fileContainer{
+  position:relative;
+  display: inline-block;
+  text-align: center;
+  width: 150px;
+  height: 200px;
+  margin-right: 20px;
+  margin-left: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+
+.removeButton{
+  position:absolute;
+  right: 5%;
+  top: 5%;
+}

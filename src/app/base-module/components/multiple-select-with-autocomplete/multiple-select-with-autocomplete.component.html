@@ -1,0 +1,34 @@
+<div [formGroup]="formGroup" >
+  <div fxFlex="50">
+    <mat-form-field fxFlex="100">
+      <input type="text" [placeholder]="placeholder" aria-label="Number" matInput [formControl]="itemSearch" [matAutocomplete]="auto">
+      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="add($event.option.value)">
+        <mat-option *ngFor="let option of searchOptions | autoCompleteNamePipe:itemSearch.value" [value]="option">
+          {{option}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+  </div>
+
+  <div fxFlex="50">
+    <div fxFlex="100">
+      <div>Selected users(click to remove)</div>
+      <div fxLayout="column">
+        <div *ngFor="let item of formArray.value; let i =index">
+          <div>
+            {{item}}
+            <span (click)="remove(i)">
+						  X
+					  </span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <mat-error *ngIf="formArray.errors?.required && submitted" translate>
+          required
+        </mat-error>
+      </div>
+    </div>
+  </div>
+</div>
+

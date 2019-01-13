@@ -1,0 +1,19 @@
+<header>
+  <div class="navbar-collapse w-100" [ngClass]="{'collapse':isCollapsed}" id="navbarNav"  id="growcery-navbar">
+    <ul class="nav navbar-nav ml-auto w-100 justify-content-end grow-nav-item-container">
+      <li class="nav-item">
+        <a class="nav-link" (click)="goTo('create-patrol-action')" data-toggle="collapse"  translate>Create Patrol Action</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" (click)="goTo('patrol-list')" data-toggle="collapse"  translate>Patrol List</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" (click)="goTo('create-patrol')"  data-toggle="collapse"  translate>Create patrol</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" (click)="goTo('')"   data-toggle="collapse"  translate>Patrol routes</a>
+      </li>
+    </ul>
+  </div>
+</header>
+

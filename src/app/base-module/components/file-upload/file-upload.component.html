@@ -1,0 +1,44 @@
+<div draggable="true" ngClass="{{dragAreaClass}}">
+  <div class="row">
+    <div class="col-md-12 text-center" >
+      <a href="javascript:void(0)" (click)="file.click()" >
+        {{texts.browseText}}
+      </a>
+      {{texts.dragDropText}}
+      <input type="file"
+             #file
+             multiple
+             (change) = "onFileChange($event)"
+             style="display:none" />
+    </div>
+  </div>
+</div>
+
+  <div class="fileGallery">
+      <div *ngFor="let file of filesToUpload; let i = index" class="fileContainer">
+        <img class="img-thumbnail" src="{{file.data}}"
+          alt="">
+        {{file.file.name}}
+        <span (click)="onFileRemove($event, i)" class="removeButton">
+          X
+        </span>
+      </div>
+  </div>
+
+  <div *ngIf="submitted">
+    <div class="error" *ngIf="formControlOfFiles?.errors?.required || formArray?.errors?.required">
+      this field is required
+    </div>
+    <div class="error" *ngIf="formArray?.errors?.minlength">
+      too few files
+    </div>
+    <div class="error" *ngIf="formArray?.errors?.maxlength">
+      too much files
+    </div>
+  </div>
+  <div class="error" *ngIf="errors.length > 0">
+    <ul>
+      <li *ngFor="let err of errors">{{err}}</li>
+    </ul>
+  </div>
+
